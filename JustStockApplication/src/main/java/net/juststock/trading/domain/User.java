@@ -1,50 +1,38 @@
 package net.juststock.trading.domain;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users") 
 public class User {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long userId;
 
-	private long userId;
-	private String userName;
-	private String contact;
+  @Column(nullable=false, length=120)
+  private String userName;
 
-	public long getUserId() {
-		return userId;
-	}
+  @Column(nullable=false, length=20)
+  private Long contact;
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
+  public User() {}
+  public User(String userName, Long contact){ this.userName=userName; this.contact=contact; }
+  public Long getUserId() {
+	return userId;
+  }
+  public void setUserId(Long userId) {
+	this.userId = userId;
+  }
+  public String getUserName() {
+	return userName;
+  }
+  public void setUserName(String userName) {
+	this.userName = userName;
+  }
+  public Long getContact() {
+	return contact;
+  }
+  public void setContact(Long contact) {
+	this.contact = contact;
+  }
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", contact=" + contact + "]";
-	}
-
-	public User(String userName, String contact) {
-		super();
-		this.userName = userName;
-		this.contact = contact;
-	}
-
-	public User() {
-		super();
-	}
 }
