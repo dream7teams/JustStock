@@ -5,79 +5,53 @@ import net.juststock.trading.domain.OptionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "options", uniqueConstraints = @UniqueConstraint(name = "uk_options_series", columnNames = {
-		"underlying_symbol", "exchange", "expiry_date", "strike", "option_type", "trading_symbol" }))
+@Table(name = "option_chain")
 public class Options {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "underlying_symbol", nullable = false, length = 60)
-	private String underlyingSymbol;
+    private String underlying;
+    private Double spotPrice;
+    private LocalDate expiryDate;
+    private Integer lotSize;
+    private Integer maxPain;
+    private Double putCallRatio;
 
-	@Column(name = "exchange", nullable = false, length = 24)
-	private String exchange; // e.g., NFO
-
-	@Column(name = "expiry_date", nullable = false)
-	private LocalDate expiryDate;
-
-	@Column(name = "strike", nullable = false, precision = 14, scale = 4)
-	private BigDecimal strike;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "option_type", nullable = false, length = 4)
-	private OptionType optionType;
-
-	@Column(name = "lot_size", nullable = false)
-	private Integer lotSize;
-
-	@Column(name = "contract_multiplier", precision = 10, scale = 4)
-	private BigDecimal contractMultiplier;
-
-	@Column(name = "tick_size", precision = 12, scale = 4)
-	private BigDecimal tickSize;
-
-	@Column(name = "trading_symbol", length = 80)
-	private String tradingSymbol;
-
-	public Options() {
-	}
-
-	public Options(String underlyingSymbol, String exchange, LocalDate expiryDate, BigDecimal strike,
-			OptionType optionType, Integer lotSize, BigDecimal contractMultiplier, BigDecimal tickSize,
-			String tradingSymbol) {
-		this.underlyingSymbol = underlyingSymbol;
-		this.exchange = exchange;
-		this.expiryDate = expiryDate;
-		this.strike = strike;
-		this.optionType = optionType;
-		this.lotSize = lotSize;
-		this.contractMultiplier = contractMultiplier;
-		this.tickSize = tickSize;
-		this.tradingSymbol = tradingSymbol;
-	}
+    @OneToMany(mappedBy = "optionChain", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OptionStrike> options = new ArrayList<>();
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getUnderlyingSymbol() {
-		return underlyingSymbol;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setUnderlyingSymbol(String underlyingSymbol) {
-		this.underlyingSymbol = underlyingSymbol;
+	public String getUnderlying() {
+		return underlying;
 	}
 
-	public String getExchange() {
-		return exchange;
+	public void setUnderlying(String underlying) {
+		this.underlying = underlying;
 	}
 
-	public void setExchange(String exchange) {
-		this.exchange = exchange;
+	public Double getSpotPrice() {
+		return spotPrice;
+	}
+
+	public void setSpotPrice(Double spotPrice) {
+		this.spotPrice = spotPrice;
 	}
 
 	public LocalDate getExpiryDate() {
@@ -88,22 +62,6 @@ public class Options {
 		this.expiryDate = expiryDate;
 	}
 
-	public BigDecimal getStrike() {
-		return strike;
-	}
-
-	public void setStrike(BigDecimal strike) {
-		this.strike = strike;
-	}
-
-	public OptionType getOptionType() {
-		return optionType;
-	}
-
-	public void setOptionType(OptionType optionType) {
-		this.optionType = optionType;
-	}
-
 	public Integer getLotSize() {
 		return lotSize;
 	}
@@ -112,35 +70,30 @@ public class Options {
 		this.lotSize = lotSize;
 	}
 
-	public BigDecimal getContractMultiplier() {
-		return contractMultiplier;
+	public Integer getMaxPain() {
+		return maxPain;
 	}
 
-	public void setContractMultiplier(BigDecimal contractMultiplier) {
-		this.contractMultiplier = contractMultiplier;
+	public void setMaxPain(Integer maxPain) {
+		this.maxPain = maxPain;
 	}
 
-	public BigDecimal getTickSize() {
-		return tickSize;
+	public Double getPutCallRatio() {
+		return putCallRatio;
 	}
 
-	public void setTickSize(BigDecimal tickSize) {
-		this.tickSize = tickSize;
+	public void setPutCallRatio(Double putCallRatio) {
+		this.putCallRatio = putCallRatio;
 	}
 
-	public String getTradingSymbol() {
-		return tradingSymbol;
+	public List<OptionStrike> getOptions() {
+		return options;
 	}
 
-	public void setTradingSymbol(String tradingSymbol) {
-		this.tradingSymbol = tradingSymbol;
+	public void setOptions(List<OptionStrike> options) {
+		this.options = options;
 	}
-
-	@Override
-	public String toString() {
-		return "Options{" + "id=" + id + ", underlyingSymbol='" + underlyingSymbol + '\'' + ", exchange='" + exchange
-				+ '\'' + ", expiryDate=" + expiryDate + ", strike=" + strike + ", optionType=" + optionType
-				+ ", lotSize=" + lotSize + ", contractMultiplier=" + contractMultiplier + ", tickSize=" + tickSize
-				+ ", tradingSymbol='" + tradingSymbol + '\'' + '}';
-	}
+    
+    
+    
 }
