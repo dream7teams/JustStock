@@ -3,36 +3,22 @@ package net.juststock.trading.domain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") 
+@Table(name = "users")
 public class User {
+
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long id;
 
-  @Column(nullable=false, length=120)
-  private String userName;
+  @Column(nullable = false, unique = true, length = 40)
+  private long contact; // phone/email
 
-  @Column(nullable=false, length=20)
-  private Long contact;
+  @Column(nullable = false, length = 120)
+  private String fullName;
 
-  public User() {}
-  public User(String userName, Long contact){ this.userName=userName; this.contact=contact; }
-  public Long getUserId() {
-	return userId;
-  }
-  public void setUserId(Long userId) {
-	this.userId = userId;
-  }
-  public String getUserName() {
-	return userName;
-  }
-  public void setUserName(String userName) {
-	this.userName = userName;
-  }
-  public Long getContact() {
-	return contact;
-  }
-  public void setContact(Long contact) {
-	this.contact = contact;
-  }
-
+  // getters/setters
+  public Long getId() { return id; }
+  public long getContact() { return contact; }
+  public void setContact(long contact) { this.contact = contact; }
+  public String getFullName() { return fullName; }
+  public void setFullName(String fullName) { this.fullName = fullName; }
 }

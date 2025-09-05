@@ -1,4 +1,4 @@
-package net.juststock.trading.services.impl;
+	package net.juststock.trading.services.impl;
 
 import net.juststock.trading.domain.User;
 import net.juststock.trading.repository.IUserRepository;

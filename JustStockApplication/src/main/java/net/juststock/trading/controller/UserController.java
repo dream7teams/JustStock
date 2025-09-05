@@ -35,6 +35,7 @@ public class UserController {
 	                .status(HttpStatus.NOT_ACCEPTABLE)
 	                .body("User already exists with this contact.");
 	    }
+	    
 		var newUser = userService.addNewUser(user);
 		return newUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(406).build());
 	}

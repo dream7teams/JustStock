@@ -1,4 +1,4 @@
-package net.juststock.trading.domain;
+package net.juststock.trading.domain.singnal;
 
 import java.math.BigDecimal;
 
